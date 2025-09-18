@@ -539,10 +539,21 @@ namespace BoletoNet
                     MontaInstrucoes(Boleto.Cedente.Instrucoes);
 
                 if (string.IsNullOrEmpty(this.Boleto.QRCode))
+                {
                     return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml).Replace("@QRCODE", "").Replace("@COPIARCOLAR", "");
+                }
                 else
                 {
                     string copiarColar = string.Format("Escolha a forma mais conveniente para realizar seu pagamento: <b><i>Código de Barras</i></b> ou <b><i>QR Code</i></b>. Basta acessar o aplicativo da sua instituição financeira e utilizar apenas uma das opções.<br><br><b>Pix Copia e Cola</b><br><font color='Blue'>{0}</font>", this.Boleto.QRCode);
+
+                    // Daniel Cazé - 17/07/2024
+                    // Só alterar se for para não exibir.
+                    // Pois no caso de verdadeiro, continuará tudo como já é hoje
+                    if (Boleto.NaoExibirCodigoCopiaColaPix)
+                    {
+                        copiarColar = string.Format("Escolha a forma mais conveniente para realizar seu pagamento: <b><i>Código de Barras</i></b> ou <b><i>QR Code</i></b>. Basta acessar o aplicativo da sua instituição financeira e utilizar apenas uma das opções.");
+                    }
+
                     string qrCode = QRCodeHelper.GerarQrCode(this.Boleto.QRCode);
                     string fnQRCode = string.Format("data:image/jpeg;base64,{0}", qrCode);
                     return html.ToString().Replace("@INSTRUCOES", _instrucoesHtml)

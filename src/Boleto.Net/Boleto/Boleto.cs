@@ -648,7 +648,21 @@ namespace BoletoNet
         public IBancoCarteira BancoCarteira { get; set; }
 
         public string TipoDeCobranca { get; set; }
+
+        /// <summary>
+        /// Código cópia e cola do pix. Utilizado para gerar o QRCode do PIX
+        /// </summary>
         public string QRCode { get; set; }
+
+        /// Daniel Caze - 17/07/2024
+        /// Isso esta sendo implementado pois se o boleto for gerado em formato PDF, o codigo ao quebrar a linha é adicionado de uma quebra de linha
+        /// pelos leitores de pdf. Quando o usuário copia o codigo, ele fica unitilizado pois a maioria dos usuários não sabe que não deveria haver a quebra de linha
+        /// Esse problema não ocorre se o boleto for exibido como html. Irei excluir com detalhes no pull request futuro
+        /// <summary>
+        /// Falso [default] = Exibir dentro da área de instruções do cedente, o codigo passado on atributo "QRCode"
+        /// Verdadeiro = Ocultar esse codigo. Apenas exibir o QRCode.
+        /// </summary>
+        public bool NaoExibirCodigoCopiaColaPix { get; set; }
 
         public DateTime? DataDescontoAntecipacao2 { get; set; }
         public decimal? ValorDescontoAntecipacao2 { get; set; }
